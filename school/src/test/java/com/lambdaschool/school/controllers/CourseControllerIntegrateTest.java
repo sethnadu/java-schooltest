@@ -4,6 +4,7 @@ package com.lambdaschool.school.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lambdaschool.school.model.Course;
 import com.lambdaschool.school.model.Instructor;
+import com.lambdaschool.school.repository.InstructorRepository;
 import com.lambdaschool.school.service.InstructorService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.Before;
@@ -27,6 +28,9 @@ public class CourseControllerIntegrateTest
     @Autowired
     private WebApplicationContext webApplicationContext;
 
+    @Autowired
+    private InstructorRepository instructorrepos;
+
     @Before
     public void initialiseRestAssuredMockMvcWebApplicationContext()
     {
@@ -46,12 +50,15 @@ public class CourseControllerIntegrateTest
     {
 
     Instructor s5 = new Instructor("Sally");
-    Course c7 = new Course("Java Fundamentals");
+    instructorrepos.save(s5);
     s5.getCourses().add(new Course("Java Fundamentals", s5));
+    Course c7 = new Course("Java Fundamentals", s5);
+
 
     ObjectMapper mapper = new ObjectMapper();
     String stringC7 = mapper.writeValueAsString(c7);
 
     given().contentType("application/json").body(stringC7).when().post("/courses/course/add").then().statusCode(201);
+        System.out.println("C7String " + stringC7);
     }
 }
