@@ -24,7 +24,7 @@ public class CourseServiceImplTest
     private CourseService courseService;
 
     @Autowired
-    private InstructorRepository instructorRepo;
+    private InstructorService instructorService;
 
     @Before
     public void setUp() throws Exception
@@ -54,10 +54,8 @@ public class CourseServiceImplTest
     @Test
     public void save()
     {
-        Instructor s5 = new Instructor("Sally");
-        instructorRepo.save(s5);
-        s5.getCourses().add(new Course("Java Fundamentals", s5));
-        Course c7 = new Course("Java Fundamentals", s5);
+        Instructor s1 = instructorService.findInstructorById(1);
+        Course c7 = new Course("Java Fundamentals", s1);
 
         Course addCourse = courseService.save(c7);
 
@@ -65,5 +63,6 @@ public class CourseServiceImplTest
 
         Course foundCourse = courseService.findCourseById(addCourse.getCourseid());
         assertEquals(addCourse.getCoursename(), foundCourse.getCoursename());
+
     }
 }

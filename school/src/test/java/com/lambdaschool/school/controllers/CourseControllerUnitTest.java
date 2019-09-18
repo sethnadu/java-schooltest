@@ -7,6 +7,7 @@ import com.lambdaschool.school.model.Course;
 import com.lambdaschool.school.model.Instructor;
 import com.lambdaschool.school.model.Student;
 import com.lambdaschool.school.service.CourseService;
+import com.lambdaschool.school.service.InstructorService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -45,32 +48,37 @@ public class CourseControllerUnitTest
 
     private ArrayList<Course> courseList = new ArrayList<>();
 
-//    @Sql(scripts = "data.sql")
+    private ArrayList<Instructor> instructorList = new ArrayList<>();
+
+//    @Sql(scripts = "classpath:/test/resources/data.sql")
     @Before
     public void setUp() throws Exception
     {
-//        courseList.addAll(courseService.findAll());
-//        courseList = new ArrayList<>();
-//
+//     courseList = new ArrayList<>();
+//     courseList.addAll(courseService.findAll());
+
+
         Instructor i1 = new Instructor("Sally");
-        i1.setInstructid(0);
+        i1.setInstructid(1);
         Instructor i2 = new Instructor("Lucy");
-        i2.setInstructid(1);
+        i2.setInstructid(2);
         Instructor i3 = new Instructor("Charlie");
-        i3.setInstructid(2);
+        i3.setInstructid(3);
 
         Course c1 = new Course("Data Science", i1);
-        c1.setCourseid(0);
+        c1.setCourseid(1);
         Course c2 = new Course("JavaScript", i1);
-        c2.setCourseid(1);
+        c2.setCourseid(2);
         Course c3 = new Course("Node.js", i1);
-        c3.setCourseid(2);
+        c3.setCourseid(3);
         Course c4 = new Course("Java Back End", i2);
-        c4.setCourseid(3);
+        c4.setCourseid(4);
         Course c5 = new Course("Mobile IOS", i2);
-        c5.setCourseid(4);
+        c5.setCourseid(5);
         Course c6 = new Course("Mobile Android", i3);
-        c6.setCourseid(5);
+        c6.setCourseid(6);
+
+        instructorList.add(i1);
 
        courseList.add(c1);
        courseList.add(c2);
@@ -113,9 +121,8 @@ public class CourseControllerUnitTest
     {
         String apiUrl = "/courses/course/add";
 
-        Instructor s5 = new Instructor("Sally");
-        Course c7 = new Course("Java Fundamentals", s5);
-        s5.getCourses().add(new Course("Java Fundamentals", s5));
+        Instructor s1 = instructorList.get(0);
+        Course c7 = new Course("Java Fundamentals", s1);
 
         ObjectMapper mapper = new ObjectMapper();
         String c7String = mapper.writeValueAsString(c7);
@@ -128,7 +135,7 @@ public class CourseControllerUnitTest
         mockMvc.perform(rb).andExpect(status().isCreated()).andDo(MockMvcResultHandlers.print());
 
         System.out.println("C7 Sting" + c7String);
-        System.out.println("s5 " + s5);
+        System.out.println("Instructor " + s1);
         System.out.println("Request Builder" + rb);
 
     }

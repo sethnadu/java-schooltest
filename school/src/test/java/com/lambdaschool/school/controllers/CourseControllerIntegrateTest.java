@@ -29,7 +29,7 @@ public class CourseControllerIntegrateTest
     private WebApplicationContext webApplicationContext;
 
     @Autowired
-    private InstructorRepository instructorrepos;
+    private InstructorService instructorService;
 
     @Before
     public void initialiseRestAssuredMockMvcWebApplicationContext()
@@ -49,10 +49,13 @@ public class CourseControllerIntegrateTest
     public void givenPostACourse() throws Exception
     {
 
-    Instructor s5 = new Instructor("Sally");
-    instructorrepos.save(s5);
-    s5.getCourses().add(new Course("Java Fundamentals", s5));
-    Course c7 = new Course("Java Fundamentals", s5);
+//    Instructor s5 = new Instructor("Sally");
+//    instructorrepos.save(s5);
+//    s5.getCourses().add(new Course("Java Fundamentals", s5));
+//    Course c7 = new Course("Java Fundamentals", s5);
+
+        Instructor s1 = instructorService.findInstructorById(1);
+        Course c7 = new Course("Java Fundamentals", s1);
 
 
     ObjectMapper mapper = new ObjectMapper();
